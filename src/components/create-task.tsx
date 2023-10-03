@@ -1,12 +1,15 @@
 "use client";
 import { useRef } from "react";
+import { useRouter } from "next/navigation";
 import { PlusIcon } from "lucide-react";
+import { createTask } from "@/lib/api/tasks/mutations";
 
 export function CreateTask() {
+  const { refresh } = useRouter();
   const taskNameRef = useRef<HTMLInputElement | null>(null);
   const taskPointsRef = useRef<HTMLInputElement | null>(null);
 
-  function createTask() {
+  async function tryCreateTask() {
     if (!taskNameRef.current || !taskPointsRef.current) {
       alert("error: inputs dont exist");
       return;
@@ -25,9 +28,21 @@ export function CreateTask() {
       return;
     }
 
-    //post task database
+    const newTask = await createTask({
+      name: name,
+      points: points,
+      status: "INCOMPLETE",
+    });
+
+    if (newTask.error) {
+      alert("There was an error : " + newTask.error);
+      return;
+    }
+
     taskNameRef.current.value = "";
     taskPointsRef.current.value = "";
+
+    refresh();
   }
 
   return (
@@ -50,7 +65,7 @@ export function CreateTask() {
       </div>
 
       <button
-        onClick={createTask}
+        onClick={tryCreateTask}
         className="border h-fit p-1 rounded-md shadow w-[36px]"
       >
         <PlusIcon size={28} />

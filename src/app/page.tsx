@@ -1,5 +1,5 @@
 import { TotalCard, type TTotalsCard } from "@/components/totals-card";
-import { TaskCard, type TTaskCard } from "@/components/task-card";
+import { TaskCard } from "@/components/task-card";
 import { CreateTask } from "@/components/create-task";
 import { getTasks } from "@/lib/api/tasks/queries";
 
@@ -18,29 +18,11 @@ export default async function Home() {
       label: "left to earn",
     },
   ];
-  const tasks: TTaskCard[] = [
-    {
-      label: "Do Workout",
-      points: 500,
-      status: false,
-    },
-    {
-      label: "Clean room",
-      points: 500,
-      status: false,
-    },
-    {
-      label: "Wash car",
-      points: 500,
-      status: true,
-    },
-  ].filter((t) => !t.status);
 
-  const { tasks: dbTasks } = await getTasks();
+  const { tasks } = await getTasks();
 
   return (
     <div>
-      <p>{dbTasks[0].name}</p>
       <h2 className="text-3xl mb-4">Totals</h2>
       <div className="flex flex-row justify-between gap-2">
         {totals.map((element, i) => (

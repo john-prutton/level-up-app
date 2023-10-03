@@ -1,3 +1,5 @@
+"use server"
+
 import { db } from "@/lib/db";
 import { eq } from "drizzle-orm";
 import { NewTask, insertTaskSchema, tasks, taskIdSchema, TaskId } from "@/lib/db/schema/tasks";

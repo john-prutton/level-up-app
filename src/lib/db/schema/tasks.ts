@@ -6,7 +6,10 @@ export const tasks = sqliteTable("tasks", {
   id: integer("id").primaryKey(),
   name: text("name").notNull(),
   points: integer("points").notNull(),
-  status: text("status", {enum:["INCOMPLETE","COMPLETE","IN_PROGRESS"]}).notNull(),
+  status: text("status", {
+    enum:["INCOMPLETE","COMPLETE","IN_PROGRESS"]
+  }).notNull(),
+  completedAt: integer("completed_at", {mode:'timestamp_ms'})
 });
 // Schema for CRUD - used to validate API requests
 export const insertTaskSchema = createInsertSchema(tasks);
