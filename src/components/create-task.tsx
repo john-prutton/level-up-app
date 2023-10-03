@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef } from "react";
+import { useRef } from "react";
 import { PlusIcon } from "lucide-react";
 
 export function CreateTask() {

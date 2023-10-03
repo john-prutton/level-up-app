@@ -1,0 +1,12 @@
+{
+  "hasSrc": true,
+  "packages": [
+    "drizzle"
+  ],
+  "preferredPackageManager": "pnpm",
+  "rootPath": "src/",
+  "driver": "sqlite",
+  "provider": "better-sqlite3",
+  "orm": "drizzle",
+  "auth": null
+}

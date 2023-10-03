@@ -1,8 +1,9 @@
 import { TotalCard, type TTotalsCard } from "@/components/totals-card";
 import { TaskCard, type TTaskCard } from "@/components/task-card";
 import { CreateTask } from "@/components/create-task";
+import { getTasks } from "@/lib/api/tasks/queries";
 
-export default function Home() {
+export default async function Home() {
   const totals: TTotalsCard[] = [
     {
       points: 1550,
@@ -35,8 +36,11 @@ export default function Home() {
     },
   ].filter((t) => !t.status);
 
+  const { tasks: dbTasks } = await getTasks();
+
   return (
     <div>
+      <p>{dbTasks[0].name}</p>
       <h2 className="text-3xl mb-4">Totals</h2>
       <div className="flex flex-row justify-between gap-2">
         {totals.map((element, i) => (
