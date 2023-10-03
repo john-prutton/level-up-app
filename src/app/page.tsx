@@ -20,6 +20,9 @@ export default async function Home() {
   ];
 
   const { tasks } = await getTasks();
+  const todos = tasks.filter(function (t) {
+    return t.status === "INCOMPLETE";
+  });
 
   return (
     <div>
@@ -35,8 +38,8 @@ export default async function Home() {
 
       <h2 className="text-3xl my-4">Tasks</h2>
       <div className="flex flex-col justify-between gap-2">
-        {tasks.map((element, i) => (
-          <TaskCard key={i} data={element} />
+        {todos.map((task, i) => (
+          <TaskCard key={i} data={task} />
         ))}
       </div>
     </div>

@@ -5,9 +5,14 @@ import { eq } from "drizzle-orm";
 import { NewTask, insertTaskSchema, tasks, taskIdSchema, TaskId } from "@/lib/db/schema/tasks";
 
 export const createTask = async (task: NewTask) => {
-  const newTask = insertTaskSchema.parse(task);
+  const {success:isTask} = insertTaskSchema.safeParse(task);
+  
+  if(!isTask){
+    return{error: "Incorrect task type"}
+  }
+
   try {
-    const [t] =  await db.insert(tasks).values(newTask).returning();
+    const [t] =  await db.insert(tasks).values(task).returning();
     return { task: t }
   } catch (err) {
     const message = (err as Error).message ?? "Error, please try again";
@@ -17,14 +22,18 @@ export const createTask = async (task: NewTask) => {
 };
 
 export const updateTask = async (id: TaskId, task: NewTask) => {
-  const { id: taskId } = taskIdSchema.parse({ id });
-  const newTask = insertTaskSchema.parse(task);
+  const { success: isTaskIdValid } = taskIdSchema.safeParse({ id });
+  const { success: isNewTaskValid } = insertTaskSchema.safeParse(task);
+  if(!isTaskIdValid || !isNewTaskValid){
+    return {error:"Incorrect type of id or task"}
+  }
+
   try {
-    const [c] = await db
+    const [t] = await db
      .update(tasks)
-     .set(newTask)
-     .where(eq(tasks.id, taskId!)).returning();
-    return { task: c };
+     .set(task)
+     .where(eq(tasks.id, id)).returning();
+    return { task: t };
   } catch (err) {
     const message = (err as Error).message ?? "Error, please try again"
     console.error(message);
